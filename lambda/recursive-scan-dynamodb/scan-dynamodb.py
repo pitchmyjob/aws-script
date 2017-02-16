@@ -13,7 +13,6 @@ def lambda_handler(event, context):
 
     if "key" in lastkey:
         response = table.scan(ExclusiveStartKey=lastkey['key'])
-
         if lastkey['count'] > 300:
             print "prematured stoped"
             return "stop"
