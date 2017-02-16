@@ -27,7 +27,7 @@ def lambda_handler(event, context):
             'count': lastkey['count'] + 1,
             'key': response.get('LastEvaluatedKey')
         }
-        lbda.invoke(FunctionName="scan-db", InvocationType='Event', Payload=json.dumps(send))
+        lbda.invoke(FunctionName="scan-dynamodb", InvocationType='Event', Payload=json.dumps(send))
 
 
     i = 0
@@ -35,8 +35,8 @@ def lambda_handler(event, context):
         urls.append(r['url'])
         if i > 2000:
             i = 0
-            lbda.invoke(FunctionName="push-sqs-scan", InvocationType='Event', Payload=json.dumps(urls))
+            lbda.invoke(FunctionName="push-to-sqs", InvocationType='Event', Payload=json.dumps(urls))
             urls = []
         i = i + 1
 
-    lbda.invoke(FunctionName="push-sqs-scan", InvocationType='Event', Payload=json.dumps(urls))
+    lbda.invoke(FunctionName="push-to-sqs", InvocationType='Event', Payload=json.dumps(urls))
